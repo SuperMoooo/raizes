@@ -1,4 +1,4 @@
-package com.example.raizes
+package com.raizes.app
 
 import io.flutter.embedding.android.FlutterActivity
 

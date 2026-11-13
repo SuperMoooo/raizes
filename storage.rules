@@ -1,0 +1,27 @@
+rules_version = '2';
+
+// Photos and audio are limited to family members, using the same
+// /members/{uid} allowlist as firestore.rules.
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isFamily() {
+      return request.auth != null
+        && firestore.exists(/databases/(default)/documents/members/$(request.auth.uid));
+    }
+
+    function isAllowedUpload() {
+      return request.resource.size < 25 * 1024 * 1024
+        && (request.resource.contentType.matches('image/.*')
+            || request.resource.contentType.matches('audio/.*'));
+    }
+
+    match /family/{allPaths=**} {
+      allow read: if isFamily();
+      allow create, update: if isFamily() && isAllowedUpload();
+      allow delete: if isFamily();
+    }
+
+    // Everything outside /family is denied by default.
+  }
+}

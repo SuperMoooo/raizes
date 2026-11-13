@@ -1,0 +1,39 @@
+rules_version = '2';
+
+// Access is limited to family members.
+// A user counts as family when a document exists at /members/{their uid}.
+// Those documents are created by hand in the Firebase console, and the app
+// can never create or change them, so nobody can add themselves.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isFamily() {
+      return isSignedIn()
+        && exists(/databases/$(database)/documents/members/$(request.auth.uid));
+    }
+
+    // Allowlist: a member can read only their own entry; no client writes.
+    match /members/{uid} {
+      allow read: if isSignedIn() && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    match /people/{id} {
+      allow read, write: if isFamily();
+    }
+
+    match /stories/{id} {
+      allow read, write: if isFamily();
+    }
+
+    match /curiosities/{id} {
+      allow read, write: if isFamily();
+    }
+
+    // Any collection not listed above is denied by default.
+  }
+}
