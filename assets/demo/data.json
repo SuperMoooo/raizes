@@ -1,0 +1,37 @@
+{
+    "people": [
+        {
+            "id": "p1",
+            "name": "Maria Silva",
+            "born": "1931",
+            "photo": "images/maria.jpg",
+            "bio": "..."
+        }
+    ],
+    "stories": [
+        {
+            "id": "s1",
+            "title": "A cheia de 1979",
+            "people": ["p1"],
+            "date": "1979",
+            "text": "Quando o rio subiu, tivemos de...",
+            "audio": "audio/maria_cheia.opus",
+            "images": ["images/cheia_1979.jpg"]
+        },
+        {
+            "id": "s2",
+            "title": "Como os avós se conheceram",
+            "people": ["p1", "p2"],
+            "text": "Conheceram-se numa festa da aldeia...",
+            "audio": null,
+            "images": []
+        }
+    ],
+    "curiosities": [
+        {
+            "id": "c1",
+            "text": "O avô nunca aprendeu a nadar, mas era pescador.",
+            "people": ["p2"]
+        }
+    ]
+}
